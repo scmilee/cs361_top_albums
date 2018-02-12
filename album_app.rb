@@ -1,7 +1,7 @@
 class AlbumApp
 
   def call(env)
-    [200, {}, ['Top 100 Albums of All Time']]
+    [200, {'Content-Type' => 'text/html'}, ['<h1>Top 100 Albums of All Time</h1>']]
   end
 
 end
