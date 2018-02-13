@@ -15,24 +15,14 @@ class AlbumApp
 
     #call cssGen and openFile to generate css and the entries into albums
     cssGen(response_body)
-    openFile(albums)
+    readFile(albums)
     #the query/ path handlers works for either one once the formaction is changed for each button
-    if path == '/Alphabetical'
-    #if query == 'alphabet'
-      sortedAl = albums.sort {|a,b| a[0] <=> b[0]}
-      listGenerator(sortedAl, index, response_body)
+    pathHandler(albums,index,response_body,path)
 
-    elsif path == '/Year'
-    #elsif query == 'year'
-      sortedAlb = albums.sort {|a,b| a[1] <=> b[1]}
-      listGenerator(sortedAlb, index, response_body)
-    else
-      listGenerator(albums, index, response_body)
-    end
     [200, {'Content-Type' => 'text/html'}, [response_body.to_s]]
   end
 
-  def openFile(albums)
+  def readFile(albums)
     #have a each loop to sort through the matrix removing the "" and [] from the output
     #open the .txt file, read its strings, and add them to the album
     File.open("top_100_albums.txt").each do |line|
@@ -48,25 +38,34 @@ class AlbumApp
   end
 
   def listGenerator(albums,number,response_body)
-
-      listGen = lambda{|albums,number|
-        index = 0
-        albums.each do |splittedAlbum|
-          index += 1
-          if index.to_s === number.to_s
-            response_body << '<li class="highlighted">'
-          else
-            response_body << "<li>"
-          end
-          splittedAlbum.each do |x|
-            response_body << x + "  "
-          end
-          response_body << "</li>"
+      index = 0
+      albums.each do |splittedAlbum|
+        index += 1
+        if index.to_s === number.to_s
+          response_body << '<li class="highlighted">'
+        else
+          response_body << "<li>"
         end
-        response_body << "</ol>"
-      }
-      listGen.call(albums,number)
+        splittedAlbum.each do |x|
+          response_body << x + "  "
+        end
+        response_body << "</li>"
+      end
+      response_body << "</ol>"
+
   end
+
+  def pathHandler(albums, index, response_body,path)
+    if path == '/Alphabetical'
+    #if query == 'alphabet'
+      albums = albums.sort {|a,b| a[0] <=> b[0]}
+    elsif path == '/Year'
+    #elsif query == 'year'
+      albums = albums.sort {|a,b| a[1] <=> b[1]}
+    end
+      listGenerator(albums, index, response_body)
+  end
+
   def cssGen(response_body)
     response_body << "
     <style>
