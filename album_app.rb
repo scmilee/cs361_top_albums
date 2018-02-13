@@ -30,7 +30,7 @@ class AlbumApp
       albums << albumSplit
     end
     if path == '/Alphabetical'
-      albums.sort_by {|a,b| a[0] <=> b[0]}
+      albums.sort {|a,b| a[0] <=> b[0]}
       puts albums
     elsif path == '/Year'
       albums.sort {|a,b| a[1] <=> b[1]}
