@@ -6,7 +6,7 @@ class AlbumApp
 
     req = Rack::Request.new(env)
     index = req.params["number"] || 0
-    path = req.path_info
+    #path = req.path_info
     highlightz= req.params["highlight"]
     storedQuery = req.params["storedSort"]
     query =  req.params["sortBy"] || storedQuery
@@ -38,20 +38,20 @@ class AlbumApp
   end
 
   def listGenerator(albums,number,response_body)
-      index = 0
-      albums.each do |splittedAlbum|
-        index += 1
-        if index.to_s === number.to_s
-          response_body << '<li class="highlighted">'
-        else
-          response_body << "<li>"
-        end
-        splittedAlbum.each do |x|
-          response_body << x + "  "
-        end
-        response_body << "</li>"
+    index = 0
+    albums.each do |splittedAlbum|
+      index += 1
+      if index.to_s === number.to_s
+        response_body << '<li class="highlighted">'
+      else
+        response_body << "<li>"
       end
-      response_body << "</ol>"
+      splittedAlbum.each do |x|
+        response_body << x + "  "
+      end
+      response_body << "</li>"
+    end
+    response_body << "</ol>"
 
   end
 
@@ -85,9 +85,11 @@ class AlbumApp
     }
     </style>
     <h1>Top 100 Albums of All Time</h1><br><br>
-    <form >
+    <form action= '/albums'>
     <input type='hidden' name='storedSort' value='"
-    response_body << (query || nil)
+    #carry over hidden value from the req
+    response_body << (query || "")
+
     response_body<< "'/>
     <input placeholder='highlight a song number....' name='number' id='number'>
     <button type='submit' name='highlight' value = 'true'>Submit</button>
