@@ -19,9 +19,9 @@ class AlbumApp
     end
 
     #have a each loop to sort through the matrix removing the "" and [] from the output
-    albums.each do |listedItem|
+    albums.each do |splittedAlbum|
       response_body << "<li>"
-      listedItem.each do |x|
+      splittedAlbum.each do |x|
         response_body << x + "  "
       end
       response_body << "</li>"
