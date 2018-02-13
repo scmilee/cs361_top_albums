@@ -26,7 +26,6 @@ class AlbumApp
     #have a each loop to sort through the matrix removing the "" and [] from the output
     #open the .txt file, read its strings, and add them to the album
     File.open("top_100_albums.txt").each do |line|
-
       newline = line.to_s
       #chop cuts off the ugly \n after every entry
       1.times do newline.chop! end
