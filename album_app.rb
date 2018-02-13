@@ -7,17 +7,18 @@ class AlbumApp
     req = Rack::Request.new(env)
     index = req.params["number"] || 0
     path = req.path_info
-    #query = req.params["sortBy"]
     highlightz= req.params["highlight"]
+    storedQuery = req.params["storedSort"]
+    query =  req.params["sortBy"] || storedQuery
 
     albums = []
     response_body = ""
 
     #call cssGen and openFile to generate css and the entries into albums
-    cssGen(response_body)
+    cssGen(response_body,query,storedQuery)
     readFile(albums)
     #the query/ path handlers works for either one once the formaction is changed for each button
-    pathHandler(albums,index,response_body,path)
+    pathHandler(albums,index,response_body,query)
 
     [200, {'Content-Type' => 'text/html'}, [response_body.to_s]]
   end
@@ -54,18 +55,18 @@ class AlbumApp
 
   end
 
-  def pathHandler(albums, index, response_body,path)
-    if path == '/Alphabetical'
-    #if query == 'alphabet'
+  def pathHandler(albums, index, response_body,query)
+    #if path == '/Alphabetical'
+    if query == 'alphabet'
       albums = albums.sort {|a,b| a[0] <=> b[0]}
-    elsif path == '/Year'
-    #elsif query == 'year'
+    #elsif path == '/Year'
+    elsif query == 'year'
       albums = albums.sort {|a,b| a[1] <=> b[1]}
     end
       listGenerator(albums, index, response_body)
   end
 
-  def cssGen(response_body)
+  def cssGen(response_body,query,storedSort)
     response_body << "
     <style>
     h1 {
@@ -84,14 +85,18 @@ class AlbumApp
     }
     </style>
     <h1>Top 100 Albums of All Time</h1><br><br>
-    <form>
+    <form >
+    <input type='hidden' name='storedSort' value='"
+    response_body << (query || nil)
+    response_body<< "'/>
     <input placeholder='highlight a song number....' name='number' id='number'>
     <button type='submit' name='highlight' value = 'true'>Submit</button>
     <div class='centered'>
     <h2>Sort By:</h2>
-    <button type='submit' name='sortBy' value = 'rank'formaction='/'>Rank</button>
-    <button type='submit' name='sortBy' value = 'alphabet'formaction='/Alphabetical'>Alphabetical</button>
-    <button type='submit' name='sortBy' value = 'year' formaction='/Year'>Year</button>
+
+    <button type='submit' name='sortBy' value = 'rank'>Rank</button>
+    <button type='submit' name='sortBy' value = 'alphabet'>Alphabetical</button>
+    <button type='submit' name='sortBy' value = 'year'>Year</button>
     </div>
     </form>
     <br>
