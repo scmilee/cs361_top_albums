@@ -10,18 +10,30 @@ class AlbumApp
     albums = []
     response_body = "
     <style>
+    h1 {
+       background-color: #e74c3c;
+       color: color: #ecf0f1;s
+    }
     .highlighted {
-    background-color: tomato;
-    color: black;
+      background-color: tomato;
+      color: black;
+    }
+    .centered {
+      margin: auto;
+      width: 50%;
+
+      padding: 10px;
     }
     </style>
     <h1>Top 100 Albums of All Time</h1><br><br>
     <form action = '/highlight'>
     <input placeholder='highlight a song number....' name='number' id='number'>
     <button type='submit'formaction='/highlight'>Submit</button>
+    <div class='centered'>
     <button type='submit' formaction='/'>Rank</button>
     <button type='submit' formaction='/Alphabetical'>Alphabetical</button>
     <button type='submit' formaction='/Year'>Year</button>
+    </div>
     </form>
     <br>
     <ol>"
