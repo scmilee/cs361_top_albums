@@ -6,6 +6,7 @@ class AlbumApp
 
     req = Rack::Request.new(env)
     path = req.path_info
+    query = req.params["sortBy"]
 
     albums = []
     response_body = "
@@ -28,27 +29,18 @@ class AlbumApp
     <h1>Top 100 Albums of All Time</h1><br><br>
     <form action = '/highlight'>
     <input placeholder='highlight a song number....' name='number' id='number'>
-    <button type='submit'formaction='/highlight'>Submit</button>
+    <button type='submit'name='sortBy' value = 'highlight'>Submit</button>
     <div class='centered'>
-    <button type='submit' formaction='/'>Rank</button>
-    <button type='submit' formaction='/Alphabetical'>Alphabetical</button>
-    <button type='submit' formaction='/Year'>Year</button>
+    <h2>Sort By:</h2>
+    <button type='submit' name='sortBy' value = 'rank'>Rank</button>
+    <button type='submit' name='sortBy' value = 'alphabet'>Alphabetical</button>
+    <button type='submit' name='sortBy' value = 'year'>Year</button>
     </div>
     </form>
     <br>
     <ol>"
 #have a each loop to sort through the matrix removing the "" and [] from the output
-      listGenerator = lambda{|album|
-
-        album.each do |splittedAlbum|
-          response_body << "<li>"
-          splittedAlbum.each do |x|
-            response_body << x + "  "
-          end
-          response_body << "</li>"
-        end
-        response_body << "</ol>"
-      }
+      
       listHighlighter = lambda{|albums,number|
         index = 0
         albums.each do |splittedAlbum|
@@ -76,20 +68,27 @@ class AlbumApp
       #puts the albumsplit into the array to be turned into html later
       albums << albumSplit
     end
-    if path == '/highlight'
-      index = req.params["number"]
+    #the query/ path handlers works for either one once the formaction is changed for each button
+    #if path == '/highlight'
+    if query == 'highlight'
+      index = req.params["number"] || 0
       listHighlighter.call(albums, index)
 
-    elsif path == '/Alphabetical'
+    #elsif path == '/Alphabetical'
+    elsif query == 'alphabet'
+
       sortedAl = albums.sort {|a,b| a[0] <=> b[0]}
-      listGenerator.call(sortedAl)
+      index = req.params["number"] || 0
+      listHighlighter.call(sortedAl, index)
 
-    elsif path == '/Year'
+    #elsif path == '/Year'
+    elsif query == 'year'
       sortedAlb = albums.sort {|a,b| a[1] <=> b[1]}
-      listGenerator.call(sortedAlb)
-
+      index = req.params["number"] || 0
+      listHighlighter.call(sortedAlb, index)
     else
-      listGenerator.call(albums)
+      index = req.params["number"] || 0
+      listHighlighter.call(albums, index)
     end
     [200, {'Content-Type' => 'text/html'}, [response_body.to_s]]
   end
