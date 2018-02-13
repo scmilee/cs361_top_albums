@@ -4,6 +4,7 @@ GEM
     rack (2.0.4)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
