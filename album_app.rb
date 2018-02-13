@@ -8,7 +8,14 @@ class AlbumApp
     path = req.path_info
 
     albums = []
-    response_body = "<h1>Top 100 Albums of All Time</h1><br><br>
+    response_body = "
+    <style>
+    .highlighted {
+    background-color: tomato;
+    color: black;
+    }
+    </style>
+    <h1>Top 100 Albums of All Time</h1><br><br>
     <form action = '/highlight'>
     <input placeholder='highlight a song number....' name='number' id='number'>
     <button type='submit'formaction='/highlight'>Submit</button>
@@ -31,9 +38,14 @@ class AlbumApp
         response_body << "</ol>"
       }
       listHighlighter = lambda{|albums,number|
-
-        album.each do |splittedAlbum|
-          response_body << "<li>"
+        index = 0
+        albums.each do |splittedAlbum|
+          index += 1
+          if index.to_s === number.to_s
+            response_body << '<li class="highlighted">'
+          else
+            response_body << "<li>"
+          end
           splittedAlbum.each do |x|
             response_body << x + "  "
           end
@@ -52,8 +64,9 @@ class AlbumApp
       #puts the albumsplit into the array to be turned into html later
       albums << albumSplit
     end
-    if path == 'highlight'
-
+    if path == '/highlight'
+      index = req.params["number"]
+      listHighlighter.call(albums, index)
 
     elsif path == '/Alphabetical'
       sortedAl = albums.sort {|a,b| a[0] <=> b[0]}
