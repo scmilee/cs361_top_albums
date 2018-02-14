@@ -6,7 +6,7 @@ class AlbumApp
     req = Rack::Request.new(env)
     highlight_index = req.params["number"] || 0
     #path = req.path_info
-    stored_query = req.params["storedSort"]
+    stored_query = req.params["stored_sort"]
     query =  req.params["sortBy"] || stored_query
 
     albums = []
@@ -35,24 +35,26 @@ class AlbumApp
     end
   end
 
-  def list_generator(albums,number,response_body)
-    highlight_index = 0
-    albums.each do |splitted_album|
-      highlight_index += 1
-      if highlight_index.to_s === number.to_s
-        response_body << '<li class="highlighted">'
-      else
-        response_body << "<li>"
-      end
-      splitted_album.each do |x|
-        response_body << x + "  "
-      end
-      response_body << "</li>"
+#Takes information from album and converts to list format.
+def list_generator(albums,number,response_body)
+  highlight_index = 0
+  albums.each do |splitted_album|
+    highlight_index += 1
+    if highlight_index.to_s === number.to_s
+      response_body << '<li class="highlighted">'
+    else
+      response_body << "<li>"
     end
-    response_body << "</ol>"
+    splitted_album.each do |x|
+      response_body << x + "  "
+    end
+    response_body << "</li>"
   end
+  response_body << "</ol>"
+end
 
-  def path_handler(albums, highlight_index, response_body,query)
+#Handles request queries and sorts list based off of queries.
+def path_handler(albums, highlight_index, response_body,query)
     #if path == '/Alphabetical'
     if query == 'alphabet'
       albums = albums.sort {|a,b| a[0] <=> b[0]}
@@ -63,7 +65,8 @@ class AlbumApp
   list_generator(albums, highlight_index, response_body)
 end
 
-def css_html_gen(response_body,query,storedSort)
+#Inserts base css and html code into response body.
+def css_html_gen(response_body,query,stored_sort)
   response_body << "
   <style>
   h1 {
@@ -94,7 +97,7 @@ button {
 </style>
 <h1>Top 100 Albums of All Time</h1><br><br>
 <form action= '/albums'>
-<input type='hidden' name='storedSort' value='"
+<input type='hidden' name='stored_sort' value='"
 
     #carry over hidden value from the req
     response_body << (query || "")
