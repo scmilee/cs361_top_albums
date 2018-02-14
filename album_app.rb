@@ -9,19 +9,21 @@ class AlbumApp
     stored_query = req.params["stored_sort"]
     query =  req.params["sortBy"] || stored_query
 
-    albums = []
+    albums = album_generator()
     response_body = ""
 
     #call cssGen and openFile to generate css and the entries into albums
     css_html_gen(response_body,query,stored_query)
-    read_file(albums)
+    
     #the query/ path handlers works for either one once the formaction is changed for each button
     path_handler(albums,highlight_index,response_body,query)
 
     [200, {'Content-Type' => 'text/html'}, [response_body.to_s]]
   end
 
-  def read_file(albums)
+  def album_generator()
+
+    album = []
     #have a each loop to sort through the matrix removing the "" and [] from the output
     #open the .txt file, read its strings, and add them to the album
     File.open("top_100_albums.txt").each do |line|
@@ -31,12 +33,14 @@ class AlbumApp
       #splits the line to be able to index the date later for sorting
       album_split = newline.split(', ')
       #puts the album_split into the array to be turned into html later
-      albums << album_split
+      album << album_split
     end
+
+    return album
   end
 
 #Takes information from album and converts to list format.
-def list_generator(albums,number,response_body)
+def list_generator(albums, number, response_body)
   highlight_index = 0
   albums.each do |splitted_album|
     highlight_index += 1
