@@ -1,7 +1,6 @@
 require 'rack'
 class AlbumApp
 
-
   def call(env)
 
     req = Rack::Request.new(env)
@@ -15,7 +14,7 @@ class AlbumApp
     response_body = ""
 
     #call cssGen and openFile to generate css and the entries into albums
-    cssGen(response_body,query,storedQuery)
+    cssHtmlGen(response_body,query,storedQuery)
     readFile(albums)
     #the query/ path handlers works for either one once the formaction is changed for each button
     pathHandler(albums,index,response_body,query)
@@ -65,7 +64,7 @@ class AlbumApp
       listGenerator(albums, index, response_body)
   end
 
-  def cssGen(response_body,query,storedSort)
+  def cssHtmlGen(response_body,query,storedSort)
     response_body << "
     <style>
     h1 {
