@@ -13,7 +13,8 @@ class AlbumApp
     response_body = ""
 
     #call cssGen and openFile to generate css and the entries into albums
-    css_html_gen(response_body,query,stored_query)
+    add_top(response_body)
+    add_bottom(response_body, query)
     read_file(albums)
     #the query/ path handlers works for either one once the formaction is changed for each button
     path_handler(albums,highlight_index,response_body,query)
@@ -36,7 +37,7 @@ class AlbumApp
   end
 
 #Takes information from album and converts to list format.
-def list_generator(albums,number,response_body)
+def list_generator(albums, number, response_body)
   highlight_index = 0
   albums.each do |splitted_album|
     highlight_index += 1
@@ -65,56 +66,18 @@ def path_handler(albums, highlight_index, response_body,query)
   list_generator(albums, highlight_index, response_body)
 end
 
-#Inserts base css and html code into response body.
-def css_html_gen(response_body,query,stored_sort)
-  response_body << "
-  <style>
-  h1 {
-   background-color: #e74c3c;
-   color: color: #ecf0f1;s
- }
- form {
-  width: 50%;
-  float: left;
-}
-ol {
-  width: 35%;
-}
-.highlighted {
-  background-color: tomato;
-  color: black;
-}
-.centered {
-  float: left;
-  margin: auto;
-  width: 50%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-button {
-  margin-bottom: 10px;
-}
-</style>
-<h1>Top 100 Albums of All Time</h1><br><br>
-<form action= '/albums'>
-<input type='hidden' name='stored_sort' value='"
-
-    #carry over hidden value from the req
-    response_body << (query || "")
-    response_body<< "'/>
-    <div class='centered'>
-    <h2>Sort By:</h2>
-    <button type='submit' name='sortBy' value = 'rank'>Rank</button>
-    <button type='submit' name='sortBy' value = 'alphabet'>Alphabetical</button>
-    <button type='submit' name='sortBy' value = 'year'>Year</button>
-    <br>
-    <input placeholder='highlight a song number....' name='number' id='number'>
-    <button type='submit' name='highlight' value = 'true'>Submit</button>
-    </div>
-    </form>
-    <br>
-    <br>
-    <ol>"
-
+#Add top HTML portion to response body.
+def add_top(response_body)
+  File.open("top.html").each do |line|
+    response_body << line
   end
+end
+
+#Add bottom HTML portion to response body.
+def add_bottom(response_body, query)
+  response_body << (query || "")
+  File.open("bottom.html").each do |line|
+    response_body << line
+  end
+end
 end
