@@ -52,7 +52,6 @@ class AlbumApp
       response_body << "</li>"
     end
     response_body << "</ol>"
-
   end
 
   def pathHandler(albums, index, response_body,query)
@@ -73,34 +72,46 @@ class AlbumApp
        background-color: #e74c3c;
        color: color: #ecf0f1;s
     }
+    form {
+      width: 50%;
+      float: left;
+    }
+    ol {
+      width: 35%;
+    }
     .highlighted {
       background-color: tomato;
       color: black;
     }
     .centered {
+      float: left;
       margin: auto;
       width: 50%;
-
       padding: 10px;
+      margin-bottom: 10px;
+    }
+    button {
+      margin-bottom: 10px;
     }
     </style>
     <h1>Top 100 Albums of All Time</h1><br><br>
     <form action= '/albums'>
     <input type='hidden' name='storedSort' value='"
+
     #carry over hidden value from the req
     response_body << (query || "")
-
     response_body<< "'/>
-    <input placeholder='highlight a song number....' name='number' id='number'>
-    <button type='submit' name='highlight' value = 'true'>Submit</button>
     <div class='centered'>
     <h2>Sort By:</h2>
-
     <button type='submit' name='sortBy' value = 'rank'>Rank</button>
     <button type='submit' name='sortBy' value = 'alphabet'>Alphabetical</button>
     <button type='submit' name='sortBy' value = 'year'>Year</button>
+    <br>
+    <input placeholder='highlight a song number....' name='number' id='number'>
+    <button type='submit' name='highlight' value = 'true'>Submit</button>
     </div>
     </form>
+    <br>
     <br>
     <ol>"
 
