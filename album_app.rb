@@ -14,12 +14,12 @@ class AlbumApp
 
     #call cssGen and openFile to generate css and the entries into albums
 
-    css_html_gen(response_body,query,stored_query)
+    
     
 
     add_top(response_body)
     add_bottom(response_body, query)
-    read_file(albums)
+    
 
     #the query/ path handlers works for either one once the formaction is changed for each button
     path_handler(albums,highlight_index,response_body,query)
