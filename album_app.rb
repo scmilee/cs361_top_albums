@@ -10,9 +10,9 @@ class AlbumApp
     query =  req.params["sortBy"] || stored_query
 
     albums = album_generator()
-    response_body = add_top
+    response_body = add_sto_body("top.html")
     response_body << (query || "")
-    response_body << add_bottom
+    response_body << add_to_body("bottom.html")
 
     #the query/ path handlers works for either one once the formaction is changed for each button
     path_handler(albums,highlight_index,response_body,query)
@@ -69,20 +69,12 @@ def path_handler(albums, highlight_index, response_body,query)
 end
 
 #Add top HTML portion to response body.
-def add_top()
-  response_top = ""
-  File.open("top.html").each do |line|
-    response_top << line
+def add_to_body(file_name)
+  response = ""
+  File.open(file_name).each do |line|
+    response << line
   end
-  return response_top
+  return response
 end
 
-#Add bottom HTML portion to response body.
-def add_bottom()
-  response_bottom = ""
-  File.open("bottom.html").each do |line|
-    response_bottom << line
-  end
-  return response_bottom
-end
 end
