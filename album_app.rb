@@ -10,7 +10,7 @@ class AlbumApp
     query =  req.params["sortBy"] || stored_query
 
     albums = album_generator()
-    response_body = add_sto_body("top.html")
+    response_body = add_to_body("top.html")
     response_body << (query || "")
     response_body << add_to_body("bottom.html")
 
@@ -28,7 +28,7 @@ class AlbumApp
     File.open("top_100_albums.txt").each do |line|
       newline = line.to_s
       #chop cuts off the ugly \n after every entry
-      1.times do newline.chop! end
+      newline.chop
       #splits the line to be able to index the date later for sorting
       album_split = newline.split(', ')
       #puts the album_split into the array to be turned into html later
@@ -39,42 +39,41 @@ class AlbumApp
   end
 
 #Takes information from album and converts to list format.
-def list_generator(albums, number, response_body)
-  highlight_index = 0
-  albums.each do |splitted_album|
-    highlight_index += 1
-    if highlight_index.to_s === number.to_s
-      response_body << '<li class="highlighted">'
-    else
-      response_body << "<li>"
+  def list_generator(albums, number, response_body)
+    highlight_index = 0
+    albums.each do |splitted_album|
+      highlight_index += 1
+      if highlight_index.to_s === number.to_s
+        response_body << '<li class="highlighted">'
+      else
+        response_body << "<li>"
+      end
+      splitted_album.each do |x|
+        response_body << x + "  "
+      end
+      response_body << "</li>"
     end
-    splitted_album.each do |x|
-      response_body << x + "  "
+    response_body << "</ol>"
+  end
+
+  #Handles request queries and sorts list based off of queries.
+  def path_handler(albums, highlight_index, response_body,query)
+      #if path == '/Alphabetical'
+      if query == 'alphabet'
+        albums = albums.sort {|a,b| a[0] <=> b[0]}
+      #elsif path == '/Year'
+    elsif query == 'year'
+      albums = albums.sort {|a,b| a[1] <=> b[1]}
     end
-    response_body << "</li>"
+    list_generator(albums, highlight_index, response_body)
   end
-  response_body << "</ol>"
-end
 
-#Handles request queries and sorts list based off of queries.
-def path_handler(albums, highlight_index, response_body,query)
-    #if path == '/Alphabetical'
-    if query == 'alphabet'
-      albums = albums.sort {|a,b| a[0] <=> b[0]}
-    #elsif path == '/Year'
-  elsif query == 'year'
-    albums = albums.sort {|a,b| a[1] <=> b[1]}
+  #Add top HTML portion to response body.
+  def add_to_body(file_name)
+    response = ""
+    File.open(file_name).each do |line|
+      response << line
+    end
+    return response
   end
-  list_generator(albums, highlight_index, response_body)
-end
-
-#Add top HTML portion to response body.
-def add_to_body(file_name)
-  response = ""
-  File.open(file_name).each do |line|
-    response << line
-  end
-  return response
-end
-
 end
