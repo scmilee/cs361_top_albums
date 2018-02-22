@@ -4,4 +4,7 @@ class Album
 		@year = year
 		@title = title
 	end
+	attr_accessor :rank
+	attr_accessor :year
+	attr_accessor :title
 end

@@ -1,10 +1,19 @@
 require 'rack'
 require 'sinatra'
-require 'albumlist'
+require_relative 'album'
+require_relative 'albumlist'
+
+
 
 class AlbumApp
   def call(env)
+    response_body = ""
+    highlight_index = req.params["number"] || 0
+    
+    testerp = AlbumList.new
+    testerp.sort('year')
 
+    [200, {'Content-Type' => 'text/html'}, ["response_body.to_s"]]
   end
 
 end
