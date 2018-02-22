@@ -26,6 +26,7 @@ class HtmlGen
         response << "<li>"
       end
       response << splitted_album.title
+      response << " "
       response << splitted_album.year
       response << "</li>"
     end

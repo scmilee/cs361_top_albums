@@ -1,23 +1,37 @@
+require 'rubygems'
 require 'rack'
 require 'sinatra'
 require_relative 'album'
 require_relative 'albumlist'
 require_relative 'htmlgen'
 
-class AlbumApp
-  def call(env)
-    req = Rack::Request.new(env)
-    highlight_index = req.params["number"] || 0
-    response_body = ""
-    testerp = AlbumList.new
-    testerp.sort('rank')
-    response = testerp.htmlgenerator(highlight_index)
+    albums = AlbumList.new
 
-    [200, {'Content-Type' => 'text/html'}, [response.to_s]]
-  end
+    get '/' do
+      highlight_index = params["number"] || 0
+      response = albums.htmlgenerator(highlight_index)
+      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
 
-end
+    end
+    get '/rank' do
+      highlight_index = params["number"] || 0
+      albums.sort('rank')
+      response = albums.htmlgenerator(highlight_index)
+      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
 
+    end
+    get '/alphabet' do
+      highlight_index = params["number"] || 0
+      albums.sort('title')
+      response = albums.htmlgenerator(highlight_index)
+      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+    end
+    get '/year' do
+      highlight_index = params["number"] || 0
+      albums.sort('year')
+      response = albums.htmlgenerator(highlight_index)
+      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+    end
 
 # class AlbumApp
 
