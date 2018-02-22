@@ -1,5 +1,14 @@
 require 'rack'
 require 'sinatra'
+require 'albumlist'
+
+class AlbumApp
+  def call(env)
+
+  end
+
+end
+
 
 # class AlbumApp
 
