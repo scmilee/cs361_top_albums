@@ -36,7 +36,6 @@ class HtmlGen
 
   def generate
     @response_body = add_to_body("top.html")
-    @response_body << add_to_body("bottom.html")
     @response_body << list_generator(@albums, @higlight)
   end
 
