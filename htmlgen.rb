@@ -10,12 +10,12 @@ class HtmlGen
 
   def add_to_body(file_name)
     response = ""
-      File.open(file_name).each do |line|
-        response << line
-      end
+    File.open(file_name).each do |line|
+      response << line
+    end
     return response
   end
-  
+
   def list_generator(albums, index)
     highlight_index = 0
     response = ""
