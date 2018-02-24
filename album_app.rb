@@ -7,32 +7,32 @@ require_relative 'htmlgen'
 
     albums = AlbumList.new
 
+    before do
+      @highlight_index = params["number"] || 0
+    end
+
     get '/' do
-      highlight_index = params["number"] || 0
-      response = albums.htmlgenerator(highlight_index)
-      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
-
+      response_gen(@highlight_index, albums)
     end
+
     get '/rank' do
-      highlight_index = params["number"] || 0
       albums.sort('rank')
-      response = albums.htmlgenerator(highlight_index)
-      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
-
+      response_gen(@highlight_index, albums)
     end
+
     get '/alphabet' do
-      highlight_index = params["number"] || 0
       albums.sort('title')
-      response = albums.htmlgenerator(highlight_index)
-      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+      response_gen(@highlight_index, albums)
     end
     get '/year' do
-      highlight_index = params["number"] || 0
       albums.sort('year')
-      response = albums.htmlgenerator(highlight_index)
-      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+      response_gen(@highlight_index, albums)
     end
 
+    def response_gen(highlight, albumz)
+      response = albumz.htmlgenerator(highlight)
+      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+    end
 # class AlbumApp
 
 #   def call(env)

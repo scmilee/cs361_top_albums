@@ -15,6 +15,7 @@ class HtmlGen
       end
     return response
   end
+  
   def list_generator(albums, index)
     highlight_index = 0
     response = ""
