@@ -6,9 +6,15 @@ require_relative 'albumlist'
 require_relative 'htmlgen'
 
     albums = AlbumList.new
-
+    helpers do
+      def response_gen(highlight, albumz)
+        response = albumz.htmlgenerator(highlight)
+        [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+      end
+    end
     before do
       @highlight_index = params["number"] || 0
+
     end
 
     get '/' do
@@ -28,11 +34,8 @@ require_relative 'htmlgen'
       albums.sort('year')
       response_gen(@highlight_index, albums)
     end
+  
 
-    def response_gen(highlight, albumz)
-      response = albumz.htmlgenerator(highlight)
-      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
-    end
 # class AlbumApp
 
 #   def call(env)
