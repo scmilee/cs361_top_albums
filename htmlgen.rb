@@ -1,10 +1,10 @@
 class HtmlGen
 
   def initialize(albums, highlight_index)
-    @response_body = ""
+
     @albums = albums
     @higlight = highlight_index
-    generate
+    @response_body = generate
   end
   attr_accessor :response_body
 
@@ -36,8 +36,10 @@ class HtmlGen
   end
 
   def generate
-    @response_body = add_to_body("top.html")
-    @response_body << list_generator(@albums, @higlight)
+    response_bod = ""
+    response_bod = add_to_body("top.html")
+    response_bod << list_generator(@albums, @higlight)
+    return response_bod
   end
 
 end

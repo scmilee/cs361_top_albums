@@ -9,11 +9,11 @@ require_relative 'htmlgen'
 class AlbumApp < Sinatra::Base
  albums = AlbumList.new
  helpers do
-  def response_gen(highlight, albumz)
-    response = albumz.htmlgenerator(highlight)
-    [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+    def response_gen(highlight, albumz)
+      response = albumz.htmlgenerator(highlight)
+      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+    end
   end
-end
 before do
   @highlight_index = params["number"] || 0
 
@@ -36,6 +36,7 @@ get '/year' do
   albums.sort('year')
   response_gen(@highlight_index, albums)
 end
+
 end
 
 
