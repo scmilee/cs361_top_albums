@@ -1,0 +1,69 @@
+<html>
+<head>
+  <style>
+  h1 {
+   background-color: #e74c3c;
+   color: color: #ecf0f1;s
+ }
+ form {
+  width: 50%;
+  float: left;
+}
+ol {
+  width: 35%;
+}
+.highlighted {
+  background-color: tomato;
+  color: black;
+}
+.centered {
+  float: left;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+button {
+  margin-bottom: 10px;
+}
+</style>
+<title>
+  Top 100 Albums
+</title>
+</head>
+<body>
+  <h1>Top 100 Albums of All Time</h1><br><br>
+  <form action= '/' method='get'>
+    <div class='centered'>
+      <h2>Sort By:</h2>
+      <button type='submit' formaction = 'rank'>Rank</button>
+      <button type='submit' formaction = 'alphabet'>Alphabetical</button>
+      <button type='submit' formaction = 'year'>Year</button>
+      <br>
+      <input placeholder='highlight a song number....' name='number' id='number'>
+      <button type='submit'>Submit</button>
+    </div>
+  </form>
+  <br>
+  <br>
+  <ol>
+    <% highlight_counter = 1 %>
+    <% for album in @albums %>
+    <% if @highlight.to_s === highlight_counter.to_s %>
+    <li class = "highlighted">
+      <%= album.title %>
+      <%= album.year %>
+    </li>
+    <% else %>
+    <li>
+      <%= album.title %>
+      <%= album.year %>
+    </li>
+    <% end %>
+    <% highlight_counter += 1 %>
+    <% end %>
+  </ol>
+</body>
+</html>
+
+
