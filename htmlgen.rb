@@ -19,32 +19,13 @@ class HtmlGen
     return response
   end
 
-  def list_generator(albums, index)
-    highlight_index = 0
-    response = ""
-    albums.each do |splitted_album|
-      highlight_index += 1
-      if highlight_index.to_s === index.to_s
-        response << '<li class="highlighted">'
-      else
-        response << "<li>"
-      end
-      response << splitted_album.title
-      response << " "
-      response << splitted_album.year
-      response << "</li>"
-    end
-    response << "</ol>"
-    return response
-  end
-
   def generate
     response_bod = ""
     response_bod = add_to_body("top.html")
     return response_bod
   end
   def get_template
-    return %{
+     %{
           <% highlight_index = 1 %>
           <% for @album in @albums %>
             <% if @highlight == highlight_index %>
@@ -69,7 +50,7 @@ class HtmlGen
   end
 
   def save(file)
-    File.open(file, "w+") do |f|
+    File.open(file, "a") do |f|
       f.write(render)
     end
   end
