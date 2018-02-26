@@ -1,4 +1,5 @@
 require 'erb'
+
 class HtmlGen
   include ERB::Util
   def initialize(albums, highlight_index)
@@ -10,7 +11,7 @@ class HtmlGen
     save('sorted.html')
     @response_body << add_to_body('sorted.html')
   end
-  attr_accessor :template, :albums, :response_body
+  attr_accessor :template, :albums, :response_body, :highlight
 
   def add_to_body(file_name)
     response = ""
@@ -24,7 +25,7 @@ class HtmlGen
    %{
     <% highlight_index = 1 %>
     <% for @album in @albums %>
-    <% if @highlight == highlight_index %>
+    <% if @highlight === highlight_index %>
       <li class = 'highlighted'>
       <%= h(@album.title) %>
       <%= h(@album.year) %>
@@ -34,9 +35,9 @@ class HtmlGen
       <%= h(@album.title) %>
       <%= h(@album.year) %>
       </li>
+      <% highlight_index += 1 %>
       <% end %>
 
-      <% highlight_index += 1 %>
       <% end %>
       </ol>
     }
