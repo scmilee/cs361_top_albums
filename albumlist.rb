@@ -24,7 +24,10 @@ class AlbumList
 
   def htmlgenerator(highlight_index)
     gen = HtmlGen.new(@albums, highlight_index)
-    return gen.response_body
+    gen.save(File.join(ENV['HOME'], 'top.html'))
+    response_body = gen.generate
+
+    return response_body
   end
 
   def sort(accessor)
