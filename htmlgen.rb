@@ -21,22 +21,24 @@ class HtmlGen
   end
 
   def get_template
-     %{
-          <% highlight_index = 1 %>
-          <% for @album in @albums %>
-            <% if @highlight == highlight_index %>
-              <li class = 'highlighted'>
-                <%= h(@album) %>
-              </li>
-            <% else %>
-              <li>
-                <%= h(@album) %>
-              </li>
-            <% end %>
+   %{
+    <% highlight_index = 1 %>
+    <% for @album in @albums %>
+    <% if @highlight == highlight_index %>
+      <li class = 'highlighted'>
+      <%= h(@album.title) %>
+      <%= h(@album.year) %>
+      </li>
+      <% else %>
+      <li>
+      <%= h(@album.title) %>
+      <%= h(@album.year) %>
+      </li>
+      <% end %>
 
-          <% highlight_index += 1 %>
-          <% end %>
-        </ol>
+      <% highlight_index += 1 %>
+      <% end %>
+      </ol>
     }
 
   end
