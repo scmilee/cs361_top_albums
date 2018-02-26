@@ -6,24 +6,20 @@ class HtmlGen
     @albums = albums
     @higlight = highlight_index
     @template = get_template
-    @response_body = ''
-    save(File.join(ENV['HOME'], 'top.html'))
+    @response_body = add_to_body('top.html')
+    save('sorted.html')
+    @response_body << add_to_body('sorted.html')
   end
   attr_accessor :template, :albums, :response_body
 
   def add_to_body(file_name)
     response = ""
     File.open(file_name).each do |line|
-      response << line
+      response << line.to_s
     end
     return response
   end
 
-  def generate
-    response_bod = ""
-    response_bod = add_to_body("top.html")
-    return response_bod
-  end
   def get_template
      %{
           <% highlight_index = 1 %>
@@ -50,7 +46,7 @@ class HtmlGen
   end
 
   def save(file)
-    File.open(file, "a") do |f|
+    File.open(file, "w+") do |f|
       f.write(render)
     end
   end
