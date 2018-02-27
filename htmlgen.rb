@@ -8,6 +8,7 @@ class HtmlGen
     @higlight = highlight_index
     @template = get_template
     @response_body = add_to_body('top.html')
+    
     save('sorted.html')
     @response_body << add_to_body('sorted.html')
   end
@@ -23,10 +24,10 @@ class HtmlGen
 
   def get_template
    %{
-    <% highlight_index = 1 %>
+    <% highlight_counter = 1 %>
     <% for @album in @albums %>
-    <% if @highlight === highlight_index %>
-      <li class = 'highlighted'>
+    <% if @highlight.to_s === highlight_counter.to_s %>
+      <li class = "highlighted">
       <%= h(@album.title) %>
       <%= h(@album.year) %>
       </li>
@@ -35,8 +36,9 @@ class HtmlGen
       <%= h(@album.title) %>
       <%= h(@album.year) %>
       </li>
-      <% highlight_index += 1 %>
+      
       <% end %>
+      <% highlight_counter += 1 %>
 
       <% end %>
       </ol>
