@@ -4,40 +4,40 @@ require 'sinatra/base'
 require 'sinatra'
 require_relative 'album'
 require_relative 'albumlist'
-require_relative 'htmlgen'
+
 
 class AlbumApp < Sinatra::Base
-  albums = AlbumList.new
+
   helpers do
-    def response_gen(highlight, albumz)
-      response = albumz.htmlgenerator(highlight)
-      [200, {'Content-Type' => 'text/html'}, [response.to_s]]
+    def renderer(album_list)
+      album_list.highlight(@highlight)
+      erb :index
     end
   end
 
   before do
-    @highlight_index = params["number"] || 0
+    @album_list = AlbumList.new()
+    @highlight = params["number"] || 0
+    @albums = @album_list.albums
   end
 
   get '/' do
-    @highlight_index = params["number"] || 0
-    @albums = AlbumList.new.albums
     erb :index
   end
 
   get '/rank' do
-    albums.sort('rank')
-    response_gen(@highlight_index, albums)
+    @album_list.sort('rank')
+    renderer(@album_list)
   end
 
   get '/alphabet' do
-    albums.sort('title')
-    response_gen(@highlight_index, albums)
+    @album_list.sort('title')
+    renderer(@album_list)
   end
+
   get '/year' do
-    albums.sort('year')
-    response_gen(@highlight_index, albums)
+    @album_list.sort('year')
+    renderer(@album_list)
   end
 
 end
-
