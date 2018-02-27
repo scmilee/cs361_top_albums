@@ -31,9 +31,10 @@ button {
   Top 100 Albums
 </title>
 </head>
-<h1>Top 100 Albums of All Time</h1><br><br>
-<form action= '/' method='get'>
-  <div class='centered'>
+<body>
+  <h1>Top 100 Albums of All Time</h1><br><br>
+  <form method='get'>
+    <div class='centered'>
       <h2>Sort By:</h2>
       <button type='submit' formaction = 'rank'>Rank</button>
       <button type='submit' formaction = 'alphabet'>Alphabetical</button>
@@ -41,8 +42,17 @@ button {
       <br>
       <input placeholder='highlight a song number....' name='number' id='number'>
       <button type='submit'>Submit</button>
-  </div>
+    </div>
   </form>
   <br>
   <br>
   <ol>
+    <% for @album in @albums %>
+      <li class="<%= @album.highlight ? 'highlighted' : '' %>">
+          <%= @album.title %>
+          <%= @album.year %>
+      </li>
+    <% end %>
+    </ol>
+  </body>
+  </html>
