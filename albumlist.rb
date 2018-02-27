@@ -11,22 +11,26 @@ class AlbumList
     rank_index = 1
     File.open("top_100_albums.txt").each do |line|
       newline = line.to_s
-      #chop cuts off the ugly \n after every entry
       newline.chop
-      #splits the line to be able to index the date later for sorting
       album_split = newline.split(', ')
-      album_object = Album.new( rank_index, album_split[1], album_split[0])
+      album_object = Album.new( rank_index, album_split[1], album_split[0], false)
+
       albumz << album_object
       rank_index += 1
     end
     return albumz
   end
 
-  def htmlgenerator(highlight_index)
-    gen = HtmlGen.new(@albums, highlight_index)
-    return gen.response_body
-  end
+  def highlight(index)
+    highlight = 1
+    @albums.each do |album|
+      if index.to_s === highlight.to_s
+        album.highlight = true
+      end
+    highlight += 1
+    end
 
+  end
   def sort(accessor)
     albums.sort_by!(&:"#{accessor}")
   end
