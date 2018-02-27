@@ -33,7 +33,7 @@ button {
 </head>
 <body>
   <h1>Top 100 Albums of All Time</h1><br><br>
-  <form action= '/' method='get'>
+  <form method='get'>
     <div class='centered'>
       <h2>Sort By:</h2>
       <button type='submit' formaction = 'rank'>Rank</button>
@@ -47,26 +47,12 @@ button {
   <br>
   <br>
   <ol>
-    <% @albums.each |album| do %>
-    <li class="<%= album.highlighted? ? 'highlighted' : '' %>">
-      <% end %>
-      <% highlight_counter = 1 %>
-      <% @albums.each |album| do %>
-      <% if @highlight.to_s === highlight_counter.to_s %>
-      <li class = "highlighted">
-        <%= album.title %>
-        <%= album.year %>
+    <% for @album in @albums %>
+      <li class="<%= @album.highlight ? 'highlighted' : '' %>">
+          <%= @album.title %>
+          <%= @album.year %>
       </li>
-      <% else %>
-      <li>
-        <%= album.title %>
-        <%= album.year %>
-      </li>
-      <% end %>
-      <% highlight_counter += 1 %>
-      <% end %>
+    <% end %>
     </ol>
   </body>
   </html>
-
-
