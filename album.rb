@@ -1,5 +1,4 @@
 class Album
-
   attr_accessor :rank
   attr_accessor :year
   attr_accessor :title
@@ -11,5 +10,5 @@ class Album
     @title = title
     @highlight = highlight
   end
-  
+
 end

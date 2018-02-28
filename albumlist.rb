@@ -1,11 +1,10 @@
 
 class AlbumList
-
+  attr_accessor :albums
   def initialize()
     @albums = []
     albums = file_read(@albums)
   end
-  attr_accessor :albums
 
   def file_read(albumz)
     rank_index = 1
@@ -31,6 +30,7 @@ class AlbumList
     end
 
   end
+
   def sort(accessor)
     albums.sort_by!(&:"#{accessor}")
   end

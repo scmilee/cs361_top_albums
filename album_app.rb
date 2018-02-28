@@ -5,11 +5,11 @@ require 'sinatra'
 require_relative 'album'
 require_relative 'albumlist'
 
-
 class AlbumApp < Sinatra::Base
 
   helpers do
-    def renderer(album_list)
+    def renderer(album_list, sort_by)
+      album_list.sort(sort_by)
       album_list.highlight(@highlight)
       erb :index
     end
@@ -26,18 +26,15 @@ class AlbumApp < Sinatra::Base
   end
 
   get '/rank' do
-    @album_list.sort('rank')
-    renderer(@album_list)
+    renderer(@album_list, 'rank')
   end
 
   get '/alphabet' do
-    @album_list.sort('title')
-    renderer(@album_list)
+    renderer(@album_list, 'title')
   end
 
   get '/year' do
-    @album_list.sort('year')
-    renderer(@album_list)
+    renderer(@album_list, 'year')
   end
 
 end
